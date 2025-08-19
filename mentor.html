@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mentor Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* Student list animations */
+    .student-item {
+      cursor: pointer;
+      transform: translateX(-10px);
+      opacity: 0;
+      animation: fadeSlideIn 0.4s forwards;
+    }
+    @keyframes fadeSlideIn {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    .student-item:hover {
+      background-color: #f0f4ff;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+    .list-group-item:active {
+      transform: scale(0.97);
+      background-color: #dbe4ff;
+    }
+
+    /* Mentor tool hover animations */
+    .mentor-tool {
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .mentor-tool:hover {
+      background-color: #f8f9fa;
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Student details fade-in */
+    .details-fade {
+      animation: fadeInUp 0.4s ease;
+    }
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(15px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark shadow">
+    <div class="container-fluid">
+      <span class="navbar-brand">👨‍💼 Mentor - TrackMe</span>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <div class="row">
+      <!-- Student List -->
+      <div class="col-md-4">
+        <h4>Student List</h4>
+        <ul class="list-group" id="studentList"></ul>
+      </div>
+
+      <!-- Student Details -->
+      <div class="col-md-8">
+        <div id="studentDetails">
+          <h4>Select a student to view details</h4>
+          <p class="text-muted">Click a name on the left to load progress & tools.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal fade" id="analyticsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detailed Analytics</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="analyticsContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Contact Trainer</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea class="form-control" rows="3" placeholder="Write your message..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="meetingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Schedule Meeting</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Time</label>
+              <input type="time" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Schedule</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Leave Feedback</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Feedback</label>
+              <textarea class="form-control" rows="3" placeholder="Write feedback..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const students = [
+      { name: "Jagathrachagan G", placement: 70, academic: 50, suggestion: "Focus more on OS & Aptitude this week.", skills: { OS: 45, Aptitude: 55, DBMS: 65 }},
+      { name: "Aadhavan S", placement: 85, academic: 72, suggestion: "Revise Networking concepts.", skills: { OS: 70, Aptitude: 80, DBMS: 75 }},
+      { name: "Priya K", placement: 60, academic: 68, suggestion: "Practice more coding problems.", skills: { OS: 50, Aptitude: 60, DBMS: 55 }}
+    ];
+
+    const studentListEl = document.getElementById("studentList");
+    const studentDetailsEl = document.getElementById("studentDetails");
+
+    students.forEach((student, index) => {
+      const li = document.createElement("li");
+      li.className = "list-group-item student-item";
+      li.style.animationDelay = `${index * 0.1}s`; // delay for staggered effect
+      li.textContent = student.name;
+      li.addEventListener("click", () => loadStudentDetails(index));
+      studentListEl.appendChild(li);
+    });
+
+    function loadStudentDetails(index) {
+      const s = students[index];
+      studentDetailsEl.innerHTML = `
+        <div class="card shadow-sm details-fade">
+          <div class="card-body">
+            <h5 class="card-title">${s.name}</h5>
+            <p><strong>Placement Progress</strong></p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: ${s.placement}%;">${s.placement}%</div>
+            </div>
+            <p><strong>Academic Progress</strong></p>
+            <div class="progress mb-3">
+              <div class="progress-bar bg-primary" style="width: ${s.academic}%;">${s.academic}%</div>
+            </div>
+            <div class="alert alert-secondary">
+              <i class="bi bi-lightbulb"></i> Suggested: ${s.suggestion}
+            </div>
+            <h6>Mentor Tools</h6>
+            <ul class="list-group">
+              <li class="list-group-item mentor-tool" data-bs-toggle="modal" data-bs-target="#analyticsModal" onclick="showAnalytics(${index})"><i class="bi bi-graph-up-arrow"></i> View Detailed Analytics</li>
+              <li class="list-group-item mentor-tool" data-bs-toggle="modal" data-bs-target="#contactModal"><i class="bi bi-person-lines-fill"></i> Contact Assigned Trainer</li>
+              <li class="list-group-item mentor-tool" data-bs-toggle="modal" data-bs-target="#meetingModal"><i class="bi bi-calendar-event"></i> Schedule Student Meeting</li>
+              <li class="list-group-item mentor-tool" data-bs-toggle="modal" data-bs-target="#feedbackModal"><i class="bi bi-chat-left-dots"></i> Leave Feedback</li>
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function showAnalytics(index) {
+      const s = students[index];
+      document.getElementById("analyticsContent").innerHTML = `
+        <p>📊 Placement: ${s.placement}% | 📚 Academic: ${s.academic}%</p>
+        <p>OS: ${s.skills.OS}% | Aptitude: ${s.skills.Aptitude}% | DBMS: ${s.skills.DBMS}%</p>
+      `;
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

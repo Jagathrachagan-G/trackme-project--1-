@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"> <!-- External CSS file -->
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-primary shadow">
+    <div class="container-fluid">
+      <span class="navbar-brand">👨‍🎓 Student - TrackMe</span>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <h3 class="mb-4">Today's Task Highlights</h3>
+    <div class="wrapper">
+      <div class="container-cards">
+        <input type="radio" name="slide" id="task1" checked>
+        <label for="task1" class="card-animated">
+          <div class="row">
+            <div class="icon">1</div>
+            <div class="description">
+              <h4>DSA Arrays</h4>
+              <p>Practice 20 LeetCode problems</p>
+            </div>
+          </div>
+        </label>
+
+        <input type="radio" name="slide" id="task2">
+        <label for="task2" class="card-animated">
+          <div class="row">
+            <div class="icon">2</div>
+            <div class="description">
+              <h4>DBMS Chapter 4</h4>
+              <p>Revise Relational Algebra</p>
+            </div>
+          </div>
+        </label>
+
+        <input type="radio" name="slide" id="task3">
+        <label for="task3" class="card-animated">
+          <div class="row">
+            <div class="icon">3</div>
+            <div class="description">
+              <h4>Aptitude</h4>
+              <p>Work on percentages - 15 questions</p>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <h4 class="mt-5">Quick Links</h4>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><i class="bi bi-journal-code"></i> Notes & Resources</li>
+      <li class="list-group-item"><i class="bi bi-calendar-check"></i> Weekly Calendar</li>
+      <li class="list-group-item"><i class="bi bi-bar-chart"></i> Progress Report</li>
+      <li class="list-group-item"><i class="bi bi-alarm"></i> Set Reminder</li>
+    </ul>
+
+    <h4 class="mt-5">Remarks from Trainer</h4>
+    <div class="alert alert-info">
+      <i class="bi bi-chat-dots"></i> Good progress! Try to speed up aptitude section.
+    </div>
+  </div>
+</body>
+</html>

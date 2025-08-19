@@ -1,0 +1,57 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrackMe - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: #fff;
+    }
+    .card {
+      border-radius: 1rem;
+    }
+    .btn-primary {
+      background-color: #00b894;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #00cec9;
+    }
+  </style>
+</head>
+<body class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card p-5 shadow-lg text-dark" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">TrackMe Login</h2>
+    <form>
+      <div class="mb-3">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-control" placeholder="Enter email">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" placeholder="Password">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Select Role</label>
+        <select class="form-select" id="roleSelect">
+          <option value="student.html">Student</option>
+          <option value="trainer.html">Trainer</option>
+          <option value="mentor.html">Mentor</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary w-100" onclick="goToDashboard()">Login</button>
+    </form>
+  </div>
+
+  <script>
+    function goToDashboard() {
+      const role = document.getElementById('roleSelect').value;
+      window.location.href = role;
+    }
+  </script>
+</body>
+</html>
